@@ -5,20 +5,20 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
-import { MessageComponentModule } from '../message/message.module';
+import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MessageComponentModule,
     RouterModule.forChild([
       {
         path: '',
         component: HomePage
       }
-    ])
+    ]),
+    FontAwesomeModule,
   ],
   declarations: [HomePage]
 })

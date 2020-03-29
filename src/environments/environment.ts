@@ -6,6 +6,10 @@ export const environment = {
   production: false
 };
 
+export const SERVER_URL = 'http://localhost:8080';
+// export const MAP_TILES = 'assets/cfgMap/{z}/{x}/{y}.jpg';
+export const MAP_TILES = 'http:\\/\\/{s}.tiles.redcuba.cu\\/{z}\\/{x}\\/{y}.png';
+
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
