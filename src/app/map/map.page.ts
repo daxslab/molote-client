@@ -37,17 +37,14 @@ export class MapPage implements OnInit {
 
     this.data.getTrusties()
         .subscribe((response: any) => {
-          if (response.code == 200) {
+          if (response.status == 200) {
             response.data.forEach(crowd => {
               let location = JSON.parse(crowd.location);
               let lat = location.geometry.coordinates[0];
               let lng = location.geometry.coordinates[1];
-              console.log(lat);
-              console.log(lng);
               marker([lat, lng], { icon: dot }).addTo(this.map);
             });
           }
-          console.log(response.message);
         }, error => {
           console.log(error);
         })

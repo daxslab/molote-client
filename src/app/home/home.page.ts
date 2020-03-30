@@ -50,32 +50,21 @@ export class HomePage {
     });
 
     this.getCurrentPosition().then((coordinates) => {
+
       this.data.postReport(coordinates.coords.latitude, coordinates.coords.longitude, info.uuid, additional_data)
-          .subscribe((response: any) => {
-            console.log('akak');
-            switch (response.status) {
-              case 200:
-                this.presentAlert('Reporte Creado', 'Su reporte fue enviado satisfactoriamente.');
-                break;
-              case 400:
-                this.presentAlert('Error', 'Ocurrio un error en el envío de sus datos.');
-                break;
-              case 403:
-                if (response.errorCode == 5){
-                  this.presentAlert('Lo sentimos', 'Usted no puede reportar el mismo lugar dos veces.');
-                }else{
-                  this.presentAlert('Lo sentimos', 'Usted no tiene permitido realizar un reporte');
-                }
-            }
-          }, error => {
-            this.presentAlert('Ups!!!', 'Ocurrió un error en el envío de su reporte, por favor intente más tarde.');
-            console.log(error);
-          });
+          .subscribe(
+              (okResponse: any) => {
+                this.presentAlert('Reporte Creado', okResponse.data.message);
+              },
+              (errorResponse: any) => {
+                let message = errorResponse.error.data ? errorResponse.error.data.message : 'Ha ocurrido un error';
+                this.presentAlert('Error', message);
+              }
+          );
+
     }).catch(error => {
       this.presentAlert('Ups!!!', 'No se pudo obtener la geolocalización.');
     });
-
-
   }
 
   async presentAlert(title, message) {

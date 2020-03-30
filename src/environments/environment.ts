@@ -6,7 +6,7 @@ export const environment = {
   production: false
 };
 
-export const SERVER_URL = 'http://localhost:8080';
+export const SERVER_URL = 'http://localhost:8080/v1';
 // export const MAP_TILES = 'assets/cfgMap/{z}/{x}/{y}.jpg';
 export const MAP_TILES = 'http:\\/\\/{s}.tiles.redcuba.cu\\/{z}\\/{x}\\/{y}.png';
 

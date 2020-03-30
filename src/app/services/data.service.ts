@@ -20,7 +20,7 @@ export class DataService {
 
   public postReport(lat, lng, uuid, additional_data){
 
-      return this.httpClient.post(SERVER_URL + '/report/create', {
+      return this.httpClient.post(SERVER_URL + '/report', {
       "lat": lat,
       "lng": lng,
       "uuid": uuid,
