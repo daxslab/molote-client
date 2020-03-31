@@ -35,7 +35,8 @@
                 "input": "./node_modules/leaflet/dist/images",
                 "output": "leaflet/"
               },
-              "src/manifest.webmanifest"
+              "src/manifest.webmanifest",
+              "src/.htaccess"
             ],
             "styles": [
               {
