@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+      </ion-buttons>
+    <ion-title>Reporte Avanzado</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div id="mapId" style="width: 100%; height: 100%">
+    </div>
+    <ion-button [disabled]="!marker || loading" class="report-button" (click)="reportCrowd()">Reportar</ion-button>
+
+
+</ion-content>

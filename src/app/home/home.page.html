@@ -1,20 +1,27 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Bache (CI works!!!!)
-    </ion-title>
-  </ion-toolbar>
-</ion-header> -->
-
 <ion-content>
-  <div class="center">
-    <button class="btn" (click)="reportCrowd()" style="display: inline-block">
-      <fa-icon [icon]="faMapMarker" class="fa"></fa-icon>
-    </button>
-  </div>
-  <div class="pothole-label">
-    MOLOTE AQUÍ
-  </div>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="col-12">
+        <div class="center">
+          <button class="btn" [disabled]="loading" (click)="reportCrowd()" style="display: inline-block">
+            <fa-icon [icon]="faMapMarker" class="fa"></fa-icon>
+          </button>
+          <div class="pothole-label">
+            MOLOTE AQUÍ
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <p>
+          Presione el botón si se encuentra en un ligar donde existe una acumulación de personas que no cumple con las
+          medidas dictadas contra la covid-19. Para especificar el lugar con mas detalle puede realizar un
+          <ion-button size="small" [routerLink]="['/advanced-report']">reporte avanzado</ion-button>
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <!-- fab placed to the bottom end -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="showMap()">

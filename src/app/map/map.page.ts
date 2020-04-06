@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Map, latLng, tileLayer, Layer, marker, icon } from 'leaflet';
-import { MAP_TILES } from "../../environments/environment";
-import { DataService } from "../services/data.service";
+import {Component, OnInit} from '@angular/core';
+import {Map, latLng, tileLayer, Layer, marker, icon} from 'leaflet';
+import {MAP_TILES} from "../../environments/environment";
+import {DataService} from "../services/data.service";
+import {createMap} from "../utils/leaflet-map";
 
 @Component({
   selector: 'app-map',
@@ -12,9 +13,12 @@ export class MapPage implements OnInit {
 
   map: Map;
 
-  constructor(private data: DataService,) { }
+  constructor(private data: DataService,) {
+  }
 
-  ionViewDidEnter() { this.leafletMap(); }
+  ionViewDidEnter() {
+    this.leafletMap();
+  }
 
   ngOnInit() {
   }
@@ -22,13 +26,8 @@ export class MapPage implements OnInit {
   private leafletMap() {
     // In setView add latLng and zoom
 
-    this.map = new Map('mapId', {
-      minZoom: 6,
-      maxZoom: 16
-    }).setView([22.14957, -80.44662], 7);
-    tileLayer(MAP_TILES, {
-      attribution: 'Utilizando mapas de redcuba.cu © Daxslab',
-    }).addTo(this.map);
+    this.map = createMap('mapId')
+      .setView([22.14957, -80.44662], 7);
 
     let dot = icon({
       iconUrl: 'assets/redDot1.png',
@@ -36,18 +35,18 @@ export class MapPage implements OnInit {
     });
 
     this.data.getTrusties()
-        .subscribe((response: any) => {
-          if (response.status == 200) {
-            response.data.forEach(crowd => {
-              let location = JSON.parse(crowd.location);
-              let lat = location.geometry.coordinates[0];
-              let lng = location.geometry.coordinates[1];
-              marker([lat, lng], { icon: dot }).addTo(this.map);
-            });
-          }
-        }, error => {
-          console.log(error);
-        })
+      .subscribe((response: any) => {
+        if (response.status == 200) {
+          response.data.forEach(crowd => {
+            let location = JSON.parse(crowd.location);
+            let lat = location.geometry.coordinates[0];
+            let lng = location.geometry.coordinates[1];
+            marker([lat, lng], {icon: dot}).addTo(this.map);
+          });
+        }
+      }, error => {
+        console.log(error);
+      })
   }
 
   // /** Remove map when we have multiple map object */

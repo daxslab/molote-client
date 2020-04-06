@@ -5,6 +5,10 @@ const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
   { path: 'map', loadChildren: () => import('./map/map.module').then( m => m.MapPageModule)},
+  {
+    path: 'advanced-report',
+    loadChildren: () => import('./advanced-report/advanced-report.module').then( m => m.AdvancedReportPageModule)
+  },
 ];
 
 @NgModule({

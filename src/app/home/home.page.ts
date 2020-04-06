@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { DataService, Message } from '../services/data.service';
+import {Component} from '@angular/core';
+import {DataService, Message} from '../services/data.service';
 import {Geolocation, Plugins} from "@capacitor/core";
 import {AlertController} from "@ionic/angular";
 import {Router} from "@angular/router";
 import {faMapMarker} from "@fortawesome/free-solid-svg-icons";
+import {getCurrentPosition} from "../utils/geolocation";
 
 @Component({
   selector: 'app-home',
@@ -13,12 +14,14 @@ import {faMapMarker} from "@fortawesome/free-solid-svg-icons";
 export class HomePage {
 
   faMapMarker = faMapMarker;
+  loading = false;
 
   constructor(
-      private data: DataService,
-      public alertController: AlertController,
-      private router: Router,
-  ) {}
+    private data: DataService,
+    public alertController: AlertController,
+    private router: Router,
+  ) {
+  }
 
   refresh(ev) {
     setTimeout(() => {
@@ -26,15 +29,14 @@ export class HomePage {
     }, 3000);
   }
 
-  async getCurrentPosition() {
-    const coordinates = await Geolocation.getCurrentPosition();
-    console.log('Current', coordinates);
-    return coordinates;
-  }
+  // async getCurrentPosition() {
+  //   const coordinates = await Geolocation.getCurrentPosition();
+  //   return coordinates;
+  // }
 
   async reportCrowd() {
 
-    const { Device } = Plugins;
+    const {Device} = Plugins;
 
     let info = await Device.getInfo();
 
@@ -49,18 +51,23 @@ export class HomePage {
       manufacturer: info.manufacturer
     });
 
-    this.getCurrentPosition().then((coordinates) => {
+    getCurrentPosition().then((coordinates) => {
 
-      this.data.postReport(coordinates.coords.latitude, coordinates.coords.longitude, info.uuid, additional_data)
-          .subscribe(
-              (okResponse: any) => {
-                this.presentAlert('Reporte Creado', okResponse.data.message);
-              },
-              (errorResponse: any) => {
-                let message = errorResponse.error.data ? errorResponse.error.data.message : 'Ha ocurrido un error';
-                this.presentAlert('Error', message);
-              }
-          );
+      this.loading = true;
+      let reportSubscription = this.data.postReport(coordinates.coords.latitude, coordinates.coords.longitude, info.uuid, additional_data)
+        .subscribe(
+          (okResponse: any) => {
+            this.presentAlert('Reporte Creado', okResponse.data.message);
+          },
+          (errorResponse: any) => {
+            let message = errorResponse.error.data ? errorResponse.error.data.message : 'Ha ocurrido un error';
+            this.presentAlert('Error', message);
+          }
+        );
+
+      reportSubscription.add(() => {
+        this.loading = false;
+      })
 
     }).catch(error => {
       this.presentAlert('Ups!!!', 'No se pudo obtener la geolocalización.');
