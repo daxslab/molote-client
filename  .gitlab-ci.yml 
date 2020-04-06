@@ -1,0 +1,28 @@
+image: beevelop/ionic:latest
+
+before_script:
+  - set -xe
+  - apt-get update -yqq
+  - apt-get install git -yqq
+  - apt-get install rsync -yqq
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$SSH_PRIVATE_KEY") > /dev/null
+  - mkdir -p ~/.ssh
+  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+cache:
+  untracked: true
+  key: "$CI_PROJECT_ID"
+  paths:
+    - node_modules/
+
+deploy_stage:
+  stage: deploy
+  environment: Staging
+  only:
+    - master
+  script:
+    - npm install
+    - ionic build --prod
+    - rsync -avz -e 'ssh -p 21098' www/ devikhxr@daxslab.com:/home/devikhxr/public_molote.daxslab.com --delete
