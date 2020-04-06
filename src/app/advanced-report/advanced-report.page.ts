@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Map, circle, Marker} from 'leaflet';
+import {Map, circle, Marker, icon} from 'leaflet';
 import {DataService} from "../services/data.service";
 import {getCurrentPosition} from "../utils/geolocation";
 import {createMap} from "../utils/leaflet-map";
@@ -55,7 +55,14 @@ export class AdvancedReportPage implements OnInit {
       if (this.marker){
         this.marker.remove();
       }
-      this.marker = new Marker([e.latlng.lat, e.latlng.lng]);
+      this.marker = new Marker([e.latlng.lat, e.latlng.lng], {
+        icon: icon({
+          iconSize: [ 25, 41 ],
+          iconAnchor: [ 13, 41 ],
+          iconUrl: 'leaflet/marker-icon.png',
+          shadowUrl: 'leaflet/marker-shadow.png'
+        })
+      });
       this.marker.addTo(this.map);
     }
   }
